@@ -1,18 +1,19 @@
-import pluginVue from 'eslint-plugin-vue'
-import vueTsEslintConfig from '@vue/eslint-config-typescript'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 import eslint from '@eslint/js'
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import vueTsEslintConfig from '@vue/eslint-config-typescript'
+import importSort from 'eslint-plugin-import'
+import pluginVue from 'eslint-plugin-vue'
 
 export default [
   // 针对 .ts、.mts、.tsx 和 .vue 文件进行检查
   {
     name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
+    files: ['**/*.{ts,mts,tsx,vue}']
   },
   // 忽略特定目录
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', '**/*.js']
   },
   // 合并默认配置
   eslint.configs.recommended,
@@ -20,6 +21,9 @@ export default [
   ...vueTsEslintConfig(),
   skipFormatting,
 
+  {
+    plugins: { importSort },
+  },
   {
     rules: {
       // 基础代码风格规则
@@ -52,6 +56,23 @@ export default [
 
       // 禁用 Vue 中组件名称必须是多词的规则
       'vue/multi-word-component-names': 'off',
-    },
-  },
+
+      // 强制导入按字母顺序排列
+      'importSort/order': [
+        'error',
+        {
+          'groups': [
+            ['builtin', 'external'],  // 内置和外部模块排在前面
+            ['internal'],  // 内部模块排在后面
+            ['sibling', 'index'],  // 同级和根级模块
+          ],
+          'newlines-between': 'always',  // 每组导入之间要换行
+          'alphabetize': {
+            'order': 'asc',
+            'caseInsensitive': true,
+          },
+        },
+      ]
+    }
+  }
 ]

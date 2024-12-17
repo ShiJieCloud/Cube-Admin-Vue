@@ -24,12 +24,20 @@ const svgClass = computed(() => (props.iconClass ? `svg-icon ${props.iconClass}`
 // 使用 computed 来优化 listeners 过滤逻辑
 const filteredListeners = computed(() => {
   const listeners = useAttrs()
-  return Object.fromEntries(Object.entries(listeners).filter(([key, value]) => typeof value === 'function'))
+  return Object.fromEntries(
+    Object.entries(listeners).filter(([value]) => typeof value === 'function'),
+  )
 })
 </script>
 
 <template>
-  <svg :class="svgClass" aria-hidden="true" :width="iconSize" :height="iconSize" v-on="filteredListeners">
+  <svg
+    :class="svgClass"
+    aria-hidden="true"
+    :width="iconSize"
+    :height="iconSize"
+    v-on="filteredListeners"
+  >
     <use :xlink:href="iconName" />
   </svg>
 </template>
