@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",                    // 使用 ESNext 模块系统，支持 import.meta 等特性
+    "target": "ESNext",                    // 使用 ESNext 作为目标，支持最新的 JavaScript 特性
+    "moduleResolution": "Node",           // 使用 node16 模块解析策略，适配现代 Node.js
+    "strict": true,                        // 启用严格模式，确保类型检查更严格
+    "esModuleInterop": true,               // 启用 ES 模块与 CommonJS 模块的互操作性
+    "skipLibCheck": true,                  // 跳过库文件的类型检查，提高构建性能
+    "baseUrl": "./",                       // 设置基础路径，通常是项目根目录
+    "paths": {
+      "@/*": ["src/*"]                     // 设置路径别名，方便引用 src 下的模块
+    },
+    "types": [
+      "vue",
+      "vite/client",                       // 启用 Vite 客户端类型支持
+      "element-plus/global"                // 启用 Element Plus 全局类型支持
+    ],
+    "composite": true,                     // 启用项目引用功能，加速增量编译，适用于大项目
+    "resolveJsonModule": true,             // 允许导入 JSON 文件作为模块
+    "allowSyntheticDefaultImports": true,  // 允许导入 CommonJS 模块时使用默认导入语法
+    "skipDefaultLibCheck": true,           // 跳过默认库的类型检查，提升构建速度
+    "declaration": true,                   // 生成类型声明文件 (.d.ts)
+    "declarationMap": true,                // 生成类型声明映射文件，帮助调试
+    "isolatedModules": true                // 使每个文件都被视作独立模块，避免全局依赖
+  },
+  "include": [
+    "env.d.ts",                            // 包含环境变量声明文件
+    "src/**/*",                            // 包含 src 文件夹中的所有 TypeScript 文件
+    "src/**/*.vue",                        // 包含 Vue 文件
+    "build/**/*.ts",                       // 包含 build 文件夹中的 TypeScript 文件
+    "build/**/*.d.ts",                     // 包含 build 文件夹中的类型声明文件
+    "vite.config.ts"                       // 包含 Vite 配置文件
+  ],
+  "exclude": [
+    "node_modules",                        // 排除 node_modules 目录
+    "dist",                                // 排除 dist 目录
+    "**/*.js",                             // 排除所有 JS 文件，确保只有 TS 文件被编译
+    "**/*.test.ts",                        // 排除所有测试文件
+    "**/*.spec.ts"                         // 排除所有测试文件
+  ]
+}
