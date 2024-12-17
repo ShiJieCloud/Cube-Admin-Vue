@@ -1,7 +1,5 @@
 # Cube-Admin-Vue
 
-<img src="https://raw.githubusercontent.com/ShiJieCloud/MarkDownPicMyself/main/image-2024/20241217151557469.png" alt="20241217151557469" style="display:block; margin-left:auto; margin-right:auto;" />
-
 Cube-Admin-Vue 是一个基于 Vue.js 的后台管理系统前端模板，使用 TailwindCSS 和 Sass 进行样式定制，支持响应式布局，适合构建现代化的后台管理界面。
 
 ## 许可证
@@ -20,6 +18,7 @@ Cube-Admin-Vue 是一个基于 Vue.js 的后台管理系统前端模板，使用
 
    ```bash
    git clone https://gitcode.com/qq_20185737/Cube-Admin-Vue.git
+   ```
 
 2. 安装依赖：
 
