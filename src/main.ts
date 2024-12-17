@@ -9,7 +9,7 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 // 统一导入样式文件
-import '@/styles/main.scss'
+import '@/assets/styles/main.scss'
 
 // 统一注册全局组件
 import 'virtual:svg-icons-register'
