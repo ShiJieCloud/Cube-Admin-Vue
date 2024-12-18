@@ -151,3 +151,42 @@ Cube-Admin-Vue/
    git branch -d feature/new-feature
    git push origin --delete feature/new-feature
    ```
+
+## 规范化 Git 提交信息格式
+
+在 Git 提交中，规范化提交（也叫 "Conventional Commits"）目的是通过统一的提交信息格式，提高代码历史的可读性和可维护性，当需要回溯某个特定的功能、修复或文档时，规范化的提交帮助快速定位。
+
+**提交信息格式：**
+
+```bash
+<type>(<scope>): <subject>
+```
+
+其中：
+
+- `type`：提交类型（如 `fix`、`feat` 等）。
+- `scope`：修改范围（可选，指代修改的功能模块或区域）。
+- `subject`：简洁的描述。
+
+例如：
+
+```bash
+git commit -m "fix(auth): resolve login bug"
+```
+
+**Git 提交类型及其描述的表格展示：**
+
+| **提交类型** | **描述**                                   |
+| ------------ | ------------------------------------------ |
+| `fix`        | 修复 bug                                   |
+| `feat`       | 新增功能                                   |
+| `chore`      | 日常任务（工具或配置更新等）               |
+| `docs`       | 文档修改                                   |
+| `style`      | 代码风格（不影响代码功能，通常是格式调整） |
+| `refactor`   | 代码重构（不改变外部行为，仅改善内部结构） |
+| `perf`       | 性能优化                                   |
+| `test`       | 添加或修改测试代码                         |
+| `update`     | 更新现有功能或修复                         |
+| `delete`     | 删除功能或代码                             |
+| `merge`      | 合并分支                                   |
+| `ci`         | 持续集成配置修改                           |
