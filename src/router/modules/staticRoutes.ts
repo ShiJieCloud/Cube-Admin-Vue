@@ -18,4 +18,15 @@
 
 import { RouteRecordRaw } from 'vue-router'
 
-export const staticRoutes: RouteRecordRaw[] = []
+import Login from '@/views/Login/index.vue'
+
+export const staticRoutes: RouteRecordRaw[] = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: '用户登录',
+    },
+  },
+]

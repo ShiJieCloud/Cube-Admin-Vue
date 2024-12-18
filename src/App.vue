@@ -1,9 +1,11 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
+<script setup lang="ts" name="App"></script>
 
 <template>
-  <RouterView />
+  <div class="w-screen h-screen overflow-auto">
+    <div class="w-full h-full min-w-[1080px] min-h-[720px]">
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <style scoped></style>
