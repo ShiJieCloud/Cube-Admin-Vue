@@ -54,6 +54,11 @@ Cube-Admin-Vue 是一个基于 Vue.js 的后台管理系统前端模板，使用
 ```txt
 Cube-Admin-Vue/
 │
+├── .husky/							  # Husky 配置和 Git 钩子脚本
+│   └── pre-commit
+│
+├── .vscode/						  # 存放 VSCode 编辑器的配置文件
+│
 ├── public/                           # 静态资源目录
 │   └── favicon.ico                   # 网站图标等静态资源
 │
