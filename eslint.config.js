@@ -32,7 +32,7 @@ export default [
       'no-unused-vars': ['warn'],  // 检查未使用的变量
       'sort-vars': 'error',  // 强制变量声明按字母顺序排列
       'no-console': ['warn', { allow: ['warn', 'error'] }],  // 禁止使用 console.log，允许 warn 和 error
-      'linebreak-style': ['error', 'unix'],  // 强制使用 Unix 风格换行符
+      'linebreak-style': ['error', 'windows'],  // 强制使用 windows 风格换行符
       'eqeqeq': ['error', 'always'],  // 强制使用全等运算符
       'function-call-argument-newline': ['error', 'consistent'],  // 强制函数调用时参数换行一致
 
