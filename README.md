@@ -96,3 +96,58 @@ Cube-Admin-Vue/
 └── vite.config.ts                    # Vite 配置文件
 ```
 
+## GitLab Flow 协同开发工作流
+
+该项目采用 **GitLab Flow** 模式的分支管理策略，旨在提供一种灵活、高效的工作流程，特别适用于持续集成（Continuous Integration）和持续交付（Continuous Delivery）环境，满足敏捷开发的需求。该策略注重分支管理的简洁与高效，支持快速迭代和自动化部署，以确保项目能够顺畅地进行开发、测试和发布。
+
+### 主要分支和流程
+
+在 GitLab Flow 模式下，分支结构清晰，强调 `devlop` 和 `main` 分支的分离，并通过 `feature`、`release`、`hotfix` 等分支来组织不同阶段的开发工作：
+
+- **主分支（Main）**
+
+  项目的核心分支，代表着生产环境中的稳定版本。只有经过测试和验证的代码都会合并到该分支，并通过标签（tag）标记特定的版本，以便清晰追踪每次发布的代码快照。
+
+- **开发分支（Devlop）**
+
+  日常开发的主要分支，所有开发工作从 `devlop` 分支开始，开发完成后再合并回此分支，应保持相对稳定，供团队内部使用和验证。
+
+- **功能分支（Feature Branch）**
+
+  用于开发特定的新功能。每个功能分支从 `devlop` 分支创建，开发完成后将其合并回 `develop`。功能分支的命名约定为 `feature/功能描述`，如 `feature/user-login`。
+
+- **修复分支（Hotfix）**
+
+  用于处理生产环境中的紧急 bug 。修复分支的命名通常为 `hotfix/bug描述`。完成修复后合并回 `develop` 和 `main` 分支，以确保问题在各个环境中得到及时解决。
+
+- **发布分支（Release Branch）**
+
+  用于准备新版本发布的临时分支，通常从 `develop` 分支创建。主要用于在发布前进行最终的测试、文档修改、版本号更新等准备工作。发布分支的命名约定为 `release/版本号`，例如 `release/1.0.0`。发布完成后会同时合并回 `main` 和 `develop` 分支，确保各个环境中的代码都保持一致。
+
+- **标签（Tag）**  
+
+  在每次发布新版本时，通常会在 `main` 分支上打上标签，记录该版本的代码快照。标签的命名遵循版本号的规范，如 `v1.0.0` 或 `v2.1.0`，以便准确标识发布的版本，并为未来的版本回溯提供清晰的依据。
+
+### 工作流示例
+
+1. **从 `develop` 创建一个功能分支**：
+   
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git checkout -b feature/new-feature
+   ```
+2. **开发完成后，提交并推送到远程**：
+   ```bash
+   git add .
+   git commit -m "Add new feature"
+   git push origin feature/new-feature
+   ```
+3. **创建 Pull Request / Merge Request**：
+   - 在 GitHub、GitLab 或 GitCode 等平台上创建 Pull Request，将 `feature/new-feature` 合并回 `develop` 分支。
+4. **合并后删除功能分支**：
+   
+   ```bash
+   git branch -d feature/new-feature
+   git push origin --delete feature/new-feature
+   ```
