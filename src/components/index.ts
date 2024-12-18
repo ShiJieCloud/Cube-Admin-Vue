@@ -5,7 +5,7 @@ import SvgIcon from './SvgIcon/index.vue'
 
 //全局组件
 const globalComponents: Record<string, object> = {
-  SvgIcon
+  SvgIcon,
 }
 
 //对外暴露插件对象
@@ -16,5 +16,5 @@ export default {
     Object.keys(globalComponents).forEach((key) => {
       app.component(key, globalComponents[key])
     })
-  }
+  },
 }
