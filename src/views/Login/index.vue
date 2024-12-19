@@ -1,7 +1,28 @@
 <script setup lang="ts" name="Login">
+import { computed } from 'vue'
+
 import EmailLoginForm from './components/EmailLoginForm/index.vue'
+import ForgotPasswordForm from './components/ForgotPasswordForm/index.vue'
+import PhoneLoginForm from './components/PhoneLoginForm/index.vue'
+import QRCodeLoginForm from './components/QRCodeLoginForm/index.vue'
+import RegisterForm from './components/RegisterForm/index.vue'
+import UsernameLoginForm from './components/UsernameLoginForm/index.vue'
 
 import { AppConfig } from '@/config/appConfig'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
+
+const loginFormModeMap = {
+  PHONE: PhoneLoginForm,
+  EMAIL: EmailLoginForm,
+  USERNAME: UsernameLoginForm,
+  QRCODE: QRCodeLoginForm,
+  REGISTER: RegisterForm,
+  FORGOT_PASSWORD: ForgotPasswordForm,
+}
+
+const loginForm = computed(() => loginFormModeMap[userStore.loginFormMode])
 
 // 不需要缓存的登录组件
 const excludedKeepAliveComponents = ['QRCODE']
@@ -24,7 +45,7 @@ const excludedKeepAliveComponents = ['QRCODE']
       <div class="w-full flex items-center justify-center max-w-xs md:max-w-sm">
         <Transition name="fade">
           <keep-alive :exclude="excludedKeepAliveComponents">
-            <component :is="EmailLoginForm" />
+            <component :is="loginForm" :key="userStore.loginFormMode" />
           </keep-alive>
         </Transition>
       </div>
