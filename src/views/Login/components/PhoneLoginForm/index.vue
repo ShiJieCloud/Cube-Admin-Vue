@@ -1,37 +1,18 @@
-<script setup lang="ts" name="EmailLoginForm">
+<script setup lang="ts" name="PhoneLoginForm">
 import { FormInstance, FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 import { LoginFormMode } from '@/constants/loginFormMode'
 import { useUserStore } from '@/stores/user'
-import { EmailLoginData } from '@/types/models/user'
+import { PhoneLoginData } from '@/types/models/user'
 
 const { setLoginFormMode } = useUserStore()
+const phoneLoginFormRef = ref<FormInstance>()
 
-const emailLoginFormRef = ref<FormInstance>()
-
-const emailLoginForm = ref<EmailLoginData>({
-  email: '',
+// 登录表单
+const phoneLoginForm = ref<PhoneLoginData>({
+  phone: '',
   captcha: '',
-})
-
-const emailLoginFormRules = reactive<FormRules<EmailLoginData>>({
-  email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    {
-      pattern: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z]{2,4}$/,
-      message: '邮箱格式不正确',
-      trigger: 'blur',
-    },
-  ],
-  captcha: [
-    { required: true, message: '请输入验证码', trigger: 'blur' },
-    {
-      len: 6,
-      message: '验证码必须是6位',
-      trigger: 'blur',
-    },
-  ],
 })
 
 // 验证码配置
@@ -73,6 +54,26 @@ const startCountdown = () => {
   }, 1000)
 }
 
+// 校验规则
+const phoneLoginFormRules = reactive<FormRules<PhoneLoginData>>({
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    {
+      pattern: /^1[3-9]\d{9}$/,
+      message: '手机号格式不正确',
+      trigger: 'blur',
+    },
+  ],
+  captcha: [
+    { required: true, message: '请输入验证码', trigger: 'blur' },
+    {
+      len: 6,
+      message: '验证码必须是6位',
+      trigger: 'blur',
+    },
+  ],
+})
+
 // 登录处理函数
 const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -88,15 +89,15 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 <template>
   <div class="w-full h-full">
     <el-form
-      ref="emailLoginFormRef"
-      :model="emailLoginForm"
-      :rules="emailLoginFormRules"
+      ref="phoneLoginFormRef"
+      :rules="phoneLoginFormRules"
       size="large"
+      :model="phoneLoginForm"
     >
-      <el-form-item prop="email">
-        <el-input placeholder="邮箱" v-model="emailLoginForm.email">
+      <el-form-item prop="phone">
+        <el-input placeholder="手机号码" v-model="phoneLoginForm.phone">
           <template #prefix>
-            <SvgIcon iconName="email" iconClass="size-5" />
+            <SvgIcon iconName="phone" iconClass="size-5" />
           </template>
         </el-input>
       </el-form-item>
@@ -105,8 +106,8 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
           <el-input
             placeholder="短信验证码"
             maxlength="6"
+            v-model="phoneLoginForm.captcha"
             class="2/3"
-            v-model="emailLoginForm.captcha"
           >
             <template #prefix>
               <SvgIcon iconName="captcha" iconClass="size-5" />
@@ -123,7 +124,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button class="w-full" type="primary" @click="handleLogin(emailLoginFormRef)">
+        <el-button class="w-full" type="primary" @click="handleLogin(phoneLoginFormRef)">
           登录
         </el-button>
       </el-form-item>

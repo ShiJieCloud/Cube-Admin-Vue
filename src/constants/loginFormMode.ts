@@ -1,0 +1,8 @@
+export enum LoginFormMode {
+  PHONE = 'PHONE',
+  EMAIL = 'EMAIL',
+  USERNAME = 'USERNAME',
+  QRCODE = 'QRCODE',
+  REGISTER = 'REGISTER',
+  FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+}
