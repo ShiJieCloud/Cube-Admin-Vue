@@ -1,12 +1,14 @@
 <script setup lang="ts" name="UsernameLoginForm">
 import { FormInstance, FormRules } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
+import { getCaptchaApi } from '@/api/user'
 import { LoginFormMode } from '@/constants/loginFormMode'
 import { useUserStore } from '@/stores/user'
 import { UsernameLoginData } from '@/types/models/user'
+import { handleError } from '@/utils/handleError'
 
-const { setLoginFormMode } = useUserStore()
+const { setLoginFormMode, setCaptchaId } = useUserStore()
 
 const usernameLoginFormRef = ref<FormInstance>()
 
@@ -42,6 +44,22 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
     }
   })
 }
+
+const captchaImageBase64 = ref<string>() // 确保 captcha 是一个响应式对象
+
+const getCaptcha = async () => {
+  try {
+    const data = await getCaptchaApi()
+    captchaImageBase64.value = data.captchaImageBase64
+    setCaptchaId(data.captchaId)
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+onMounted(() => {
+  getCaptcha()
+})
 </script>
 
 <template>
@@ -81,8 +99,8 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
               <SvgIcon iconName="captcha" iconClass="size-5" />
             </template>
           </el-input>
-          <div class="w-1/3 h-10 bg-gray-300 cursor-pointer">
-            <el-image fit="contain" class="w-full" src="" alt="Captcha" />
+          <div class="w-1/3 h-10 bg-gray-300 cursor-pointer" @click="getCaptcha">
+            <el-image fit="cover" class="w-full h-full" :src="captchaImageBase64" alt="Captcha" />
           </div>
         </div>
       </el-form-item>

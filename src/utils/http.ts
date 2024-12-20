@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 
 import { AppConfig } from '@/config/appConfig'
 import { ApiStatusCode } from '@/constants/statusCode'
+import { ApiResponse } from '@/types/global'
 
 // 创建axios实例
 export const http = axios.create({
@@ -28,15 +29,14 @@ http.interceptors.request.use(
 
 // 添加响应拦截器
 http.interceptors.response.use(
-  (response: AxiosResponse) => {
+  (response: AxiosResponse<ApiResponse<any>>) => {
     const { code, message, data } = response.data
 
     if (code === ApiStatusCode.SUCCESS) {
       return data
+    } else {
+      return Promise.reject(new Error(message))
     }
-
-    // 处理非成功状态码
-    return Promise.reject(new Error(message))
   },
   (error) => {
     // 处理请求错误
