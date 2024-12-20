@@ -9,6 +9,8 @@ import GlobalComponents from '@/components/index'
 import pinia from '@/stores'
 import 'element-plus/dist/index.css'
 
+import 'nprogress/nprogress.css'
+
 // 统一导入样式文件
 import '@/assets/styles/main.scss'
 
@@ -18,6 +20,7 @@ import 'virtual:svg-icons-register'
 // 引入 iconfont 图标
 import '@/assets/iconfont/iconfont.js'
 
+// 引入 NProgress 样式
 const app = createApp(App)
 
 app.use(pinia)

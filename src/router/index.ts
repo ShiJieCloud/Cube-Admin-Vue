@@ -1,10 +1,13 @@
-// src/router/index.ts
+import NProgress from 'nprogress'
 import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import { staticRoutes } from './modules/staticRoutes'
 
 import { AppConfig } from '@/config/appConfig'
 import getPageTitle from '@/utils/getPageTitle'
+
+// nprogress 进度条配置
+NProgress.configure({ showSpinner: false, speed: 500, minimum: 0.1 })
 
 // 定义路由类型
 export type RouterType = RouteRecordRaw[]
@@ -26,10 +29,15 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
+  NProgress.start() // 开始进度条
   // 填充页面标题
   document.title = getPageTitle(to.meta.title as string)
 
   next() // 继续导航
+})
+
+router.afterEach(() => {
+  NProgress.done() // 结束进度条
 })
 
 // 导出路由实例

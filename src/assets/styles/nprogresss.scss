@@ -1,0 +1,10 @@
+/* main.css 或其他全局样式文件 */
+#nprogress .bar {
+  background: #29d;
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--el-color-primary), 0 0 20px var(--el-color-primary), 0 0 30px var(--el-color-primary);
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--el-color-primary-light-9), 0 0 5px var(--el-color-primary-light-9);
+}
