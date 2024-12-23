@@ -38,7 +38,7 @@ const excludedKeepAliveComponents = ['QRCODE']
         <span
           class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
         >
-          {{ AppConfig.getAppTitle() }}
+          {{ AppConfig.getAppName() }}
         </span>
       </div>
       <!--   登录表单   -->
