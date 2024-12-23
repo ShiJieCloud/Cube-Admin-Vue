@@ -19,7 +19,7 @@ const props = defineProps({
 
 // 计算图标的实际大小
 const iconName = computed(() => `#icon-${props.iconName}`)
-const svgClass = computed(() => (props.iconClass ? `svg-icon ${props.iconClass}` : 'svg-icons'))
+const svgClass = computed(() => (props.iconClass ? `svg-icon ${props.iconClass}` : 'svg-icon'))
 
 // 使用 computed 来优化 listeners 过滤逻辑
 const filteredListeners = computed(() => {
@@ -47,5 +47,8 @@ const filteredListeners = computed(() => {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 </style>

@@ -1,4 +1,11 @@
-html, body {
+:root {
   height: 100vh;
   width: 100vw;
+
+  --os-layout-aside-width: 224px; // 侧边栏宽度
+  --os-layout-aside-fold-width: 64px; // 侧边栏折叠宽度
+  --os-layout-logo-height: 48px; // 头部高度
+  --os-layout-header-height: 48px; // 头部高度
+  --os-layout-footer-height: 32px; // 底部高度
+
 }

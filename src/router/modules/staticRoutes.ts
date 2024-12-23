@@ -18,9 +18,27 @@
 
 import { RouteRecordRaw } from 'vue-router'
 
+import Layout from '@/layout/index.vue'
+import Home from '@/views/Home/index.vue'
 import Login from '@/views/Login/index.vue'
 
 export const staticRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'Layout',
+    redirect: '/home',
+    component: Layout,
+    children: [
+      {
+        path: '/home',
+        name: 'Home',
+        component: Home,
+        meta: {
+          title: '首页',
+        },
+      },
+    ],
+  },
   {
     path: '/login',
     name: 'Login',
