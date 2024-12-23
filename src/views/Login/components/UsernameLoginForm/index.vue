@@ -1,14 +1,17 @@
 <script setup lang="ts" name="usernameLoginRequest">
-import { ElMessage, FormInstance, FormRules } from 'element-plus'
+import { ElMessage, ElNotification, FormInstance, FormRules } from 'element-plus'
 import { onMounted, reactive, ref } from 'vue'
 
-import { getCaptchaApi, postUsernameLogin } from '@/api/user'
+import { getCaptchaApi, getUserInfoApi, postUsernameLogin } from '@/api/user'
 import { LoginFormMode } from '@/constants/loginFormMode'
+import router from '@/router'
 import { useUserStore } from '@/stores/user'
 import { UsernameLoginRequest } from '@/types/models/user'
+import { getGreeting } from '@/utils/getGreeting'
 import { handleError } from '@/utils/handleError'
+import { closeLoading, startLoading } from '@/utils/loading'
 
-const { setUserToken, setLoginFormMode } = useUserStore()
+const { setUserToken, setLoginFormMode, userInfo, setUserInfo } = useUserStore()
 
 const usernameLoginRequestRef = ref<FormInstance>()
 
@@ -40,31 +43,51 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
   // 执行表单验证，验证失败时直接返回
-  await formEl.validate(async (isValid) => {
-    if (!isValid) return
+  const isValid = await formEl.validate()
+  if (!isValid) return
 
-    try {
-      // 解构出表单数据
-      const { username, password, captcha } = usernameLoginRequest.value
+  try {
+    // 解构出表单数据
+    const { username, password, captcha } = usernameLoginRequest.value
 
-      // 进行基本的用户名、密码、验证码验证
-      if (username !== 'admin123' || password !== 'admin123' || captcha !== '111111') {
-        ElMessage.error('用户名、密码或验证码错误')
-        return
-      }
-
-      // 调用登录 API
-      const usernameLoginResponse = await postUsernameLogin(usernameLoginRequest.value)
-
-      // 设置用户 Token
-      setUserToken(usernameLoginResponse.token)
-
-      ElMessage.success('登录成功')
-    } catch (error) {
-      // 错误处理
-      handleError(error)
+    // 进行基本的用户名、密码、验证码验证
+    if (username !== 'admin123' || password !== 'admin123' || captcha !== '111111') {
+      ElMessage.error('用户名、密码或验证码错误')
+      return
     }
-  })
+
+    // 显示加载状态
+    startLoading()
+
+    // 调用登录 API
+    const usernameLoginResponse = await postUsernameLogin(usernameLoginRequest.value)
+
+    // 设置用户 Token
+    setUserToken(usernameLoginResponse.token)
+
+    ElMessage.success('登录成功')
+
+    // 获取用户信息并设置
+    const userData = await getUserInfoApi()
+    if (userData) setUserInfo(userData)
+
+    // 跳转到首页
+    await router.push({ name: 'Home' })
+
+    // 显示欢迎通知
+    ElNotification({
+      title: getGreeting(),
+      message: `欢迎回来，${userInfo?.nickname}`,
+      type: 'success',
+      duration: 2000,
+    })
+
+    // 关闭加载状态
+    closeLoading()
+  } catch (error) {
+    // 错误处理
+    handleError(error)
+  }
 }
 
 const captchaImageBase64 = ref<string>() // 确保 captcha 是一个响应式对象

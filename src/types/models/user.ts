@@ -40,3 +40,16 @@ export interface CaptchaData {
 export interface UsernameLoginResponse {
   token: string
 }
+
+export interface UserInfo {
+  username: string
+  email: string
+  nickname: string
+  avatarUrl: string
+}
+
+// 定义用户数据的接口
+export interface UserInfoResponse extends UserInfo {
+  createdAt: string
+  lastLogin: string
+}

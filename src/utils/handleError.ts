@@ -4,6 +4,6 @@ export const handleError = (error: unknown): void => {
   if (error instanceof Error) {
     ElMessage.error(error.message) // 如果是 Error 对象，显示 error.message
   } else {
-    ElMessage.error('发生未知错误') // 如果不是 Error 对象，显示通用错误
+    ElMessage.error('发生未知错误，请联系管理人员查看') // 如果不是 Error 对象，显示通用错误
   }
 }

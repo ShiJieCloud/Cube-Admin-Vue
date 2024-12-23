@@ -1,6 +1,16 @@
 // 用户登录
-import { CaptchaData, UsernameLoginRequest, UsernameLoginResponse } from '@/types/models/user'
+import {
+  CaptchaData,
+  UserInfoResponse,
+  UsernameLoginRequest,
+  UsernameLoginResponse,
+} from '@/types/models/user'
 import { http } from '@/utils/http'
+
+// 获取用户信息
+export const getUserInfoApi = (): Promise<UserInfoResponse> => {
+  return http.get('/user/info')
+}
 
 // 用户名密码登录
 export const postUsernameLogin = (data: UsernameLoginRequest): Promise<UsernameLoginResponse> => {
@@ -9,5 +19,5 @@ export const postUsernameLogin = (data: UsernameLoginRequest): Promise<UsernameL
 
 // 获取验证码
 export const getCaptchaApi = (): Promise<CaptchaData> => {
-  return http.post('/captcha')
+  return http.get('/captcha')
 }
