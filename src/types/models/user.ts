@@ -8,10 +8,11 @@ export interface EmailLoginData {
   captcha: string // 验证码
 }
 
-export interface UsernameLoginData {
+export interface UsernameLoginRequest {
   username: string
   password: string
   captcha: string
+  captchaId: string
   rememberMe: boolean
 }
 
@@ -34,4 +35,8 @@ export interface RegisterFormData {
 export interface CaptchaData {
   captchaId: string
   captchaImageBase64: string
+}
+
+export interface UsernameLoginResponse {
+  token: string
 }

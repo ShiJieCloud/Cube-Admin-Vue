@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 
 import { AppConfig } from '@/config/appConfig'
 import { ApiStatusCode } from '@/constants/statusCode'
+import { useUserStore } from '@/stores/user'
 import { ApiResponse } from '@/types/global'
 
 // 创建axios实例
@@ -17,12 +18,16 @@ export const http = axios.create({
 // 添加请求拦截器
 http.interceptors.request.use(
   (config) => {
-    config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+    const { userToken } = useUserStore()
+
+    // 如果有 token，添加 Authorization 头
+    if (userToken) {
+      config.headers['Authorization'] = `Bearer ${userToken}`
+    }
+
     return config
   },
   (error) => {
-    // 请求错误时的处理
-    console.error('请求错误', error)
     return Promise.reject(error)
   },
 )

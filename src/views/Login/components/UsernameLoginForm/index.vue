@@ -1,26 +1,27 @@
-<script setup lang="ts" name="UsernameLoginForm">
-import { FormInstance, FormRules } from 'element-plus'
+<script setup lang="ts" name="usernameLoginRequest">
+import { ElMessage, FormInstance, FormRules } from 'element-plus'
 import { onMounted, reactive, ref } from 'vue'
 
-import { getCaptchaApi } from '@/api/user'
+import { getCaptchaApi, postUsernameLogin } from '@/api/user'
 import { LoginFormMode } from '@/constants/loginFormMode'
 import { useUserStore } from '@/stores/user'
-import { UsernameLoginData } from '@/types/models/user'
+import { UsernameLoginRequest } from '@/types/models/user'
 import { handleError } from '@/utils/handleError'
 
-const { setLoginFormMode, setCaptchaId } = useUserStore()
+const { setUserToken, setLoginFormMode } = useUserStore()
 
-const usernameLoginFormRef = ref<FormInstance>()
+const usernameLoginRequestRef = ref<FormInstance>()
 
-const usernameLoginForm = ref<UsernameLoginData>({
-  username: '',
-  password: '',
-  captcha: '',
+const usernameLoginRequest = ref<UsernameLoginRequest>({
+  username: 'admin123',
+  password: 'admin123',
+  captcha: '111111',
+  captchaId: '',
   rememberMe: false,
 })
 
 // 登录表单验证规则
-const usernameLoginFormRules = reactive<FormRules<UsernameLoginData>>({
+const usernameLoginRequestRules = reactive<FormRules<UsernameLoginRequest>>({
   username: [
     { required: true, message: '用户名不能为空', trigger: 'blur' },
     { min: 5, max: 15, message: '用户名长度在 5 到 15 个字符之间', trigger: 'blur' },
@@ -37,10 +38,31 @@ const usernameLoginFormRules = reactive<FormRules<UsernameLoginData>>({
 
 const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  // 调用 form.validate 方法触发表单验证
-  await formEl.validate((valid) => {
-    if (valid) {
-      /* empty */
+
+  // 执行表单验证，验证失败时直接返回
+  await formEl.validate(async (isValid) => {
+    if (!isValid) return
+
+    try {
+      // 解构出表单数据
+      const { username, password, captcha } = usernameLoginRequest.value
+
+      // 进行基本的用户名、密码、验证码验证
+      if (username !== 'admin123' || password !== 'admin123' || captcha !== '111111') {
+        ElMessage.error('用户名、密码或验证码错误')
+        return
+      }
+
+      // 调用登录 API
+      const usernameLoginResponse = await postUsernameLogin(usernameLoginRequest.value)
+
+      // 设置用户 Token
+      setUserToken(usernameLoginResponse.token)
+
+      ElMessage.success('登录成功')
+    } catch (error) {
+      // 错误处理
+      handleError(error)
     }
   })
 }
@@ -51,7 +73,7 @@ const getCaptcha = async () => {
   try {
     const data = await getCaptchaApi()
     captchaImageBase64.value = data.captchaImageBase64
-    setCaptchaId(data.captchaId)
+    usernameLoginRequest.value.captchaId = data.captchaId
   } catch (error) {
     handleError(error)
   }
@@ -66,13 +88,13 @@ onMounted(() => {
   <div class="w-full h-full">
     <!-- 表单 -->
     <el-form
-      ref="usernameLoginFormRef"
-      :rules="usernameLoginFormRules"
-      :model="usernameLoginForm"
+      ref="usernameLoginRequestRef"
+      :rules="usernameLoginRequestRules"
+      :model="usernameLoginRequest"
       size="large"
     >
       <el-form-item prop="username">
-        <el-input placeholder="请输入用户名" v-model="usernameLoginForm.username" clearable>
+        <el-input placeholder="请输入用户名" v-model="usernameLoginRequest.username" clearable>
           <template #prefix>
             <SvgIcon iconName="user" iconClass="size-5" />
           </template>
@@ -82,7 +104,7 @@ onMounted(() => {
         <el-input
           placeholder="请输入密码"
           type="password"
-          v-model="usernameLoginForm.password"
+          v-model="usernameLoginRequest.password"
           show-password
           clearable
         >
@@ -94,7 +116,7 @@ onMounted(() => {
       <!-- 验证码 -->
       <el-form-item prop="captcha" class="mb-2">
         <div class="flex items-center w-full gap-4">
-          <el-input placeholder="请输入验证码" class="w-2/3" v-model="usernameLoginForm.captcha">
+          <el-input placeholder="请输入验证码" class="w-2/3" v-model="usernameLoginRequest.captcha">
             <template #prefix>
               <SvgIcon iconName="captcha" iconClass="size-5" />
             </template>
@@ -106,7 +128,7 @@ onMounted(() => {
       </el-form-item>
       <el-form-item class="mb-2">
         <div class="flex items-center">
-          <el-checkbox v-model="usernameLoginForm.rememberMe">
+          <el-checkbox v-model="usernameLoginRequest.rememberMe">
             <div class="flex items-center gap-1">
               <span>7天内免登录</span>
               <el-tooltip
@@ -120,9 +142,9 @@ onMounted(() => {
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button class="w-full" type="primary" @click="handleLogin(usernameLoginFormRef)">
-          登录</el-button
-        >
+        <el-button class="w-full" type="primary" @click="handleLogin(usernameLoginRequestRef)">
+          登录
+        </el-button>
         <div class="leading-6 flex w-full justify-between">
           <el-link
             class="text-md"
