@@ -2,6 +2,9 @@
 import Footer from '@/layout/components/Footer/index.vue'
 import Logo from '@/layout/components/Logo/index.vue'
 import Menu from '@/layout/components/Menu/index.vue'
+import { useUserStore } from '@/stores/user'
+
+const { userInfo } = useUserStore()
 </script>
 
 <template>
@@ -45,9 +48,12 @@ import Menu from '@/layout/components/Menu/index.vue'
             <!-- 用户信息 -->
             <el-dropdown>
               <div class="flex items-center gap-3">
-                <el-tag type="primary">{{ 1111 }}</el-tag>
-                <el-avatar :size="36" src="" @error="true">
-                  <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+                <el-tag type="primary">{{ userInfo?.nickname }}</el-tag>
+                <el-avatar :size="36" :src="userInfo?.avatarUrl" @error="false">
+                  <img
+                    src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+                    alt="加载失败"
+                  />
                 </el-avatar>
               </div>
               <template #dropdown>
@@ -103,7 +109,7 @@ import Menu from '@/layout/components/Menu/index.vue'
   }
 
   .el-main {
-    @apply w-full h-full p-3;
+    @apply w-full h-full p-2;
     background-color: var(--el-bg-color-page);
   }
 
