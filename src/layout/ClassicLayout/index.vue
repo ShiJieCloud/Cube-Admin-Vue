@@ -1,4 +1,5 @@
 <script setup lang="ts" name="ClassicLayout">
+import Breadcrumb from '@/layout/components/Breadcrumb/index.vue'
 import Footer from '@/layout/components/Footer/index.vue'
 import Logo from '@/layout/components/Logo/index.vue'
 import Menu from '@/layout/components/Menu/index.vue'
@@ -15,10 +16,12 @@ const { userInfo } = useUserStore()
         <Menu />
       </el-aside>
       <el-container>
-        <el-header class="w-full h-full flex items-center justify-center">
-          <div class="h-full flex items-center">
+        <el-header class="w-full h-full flex items-center justify-between">
+          <div class="h-full flex items-center gap-4">
             <!-- 折叠按钮 -->
             <SvgIcon iconName="fold" :iconSize="24" />
+
+            <Breadcrumb />
           </div>
 
           <div class="h-full flex items-center justify-end gap-4">
