@@ -35,6 +35,7 @@ export const staticRoutes: RouteRecordRaw[] = [
         component: Home,
         meta: {
           title: '首页',
+          icon: 'home',
         },
       },
     ],

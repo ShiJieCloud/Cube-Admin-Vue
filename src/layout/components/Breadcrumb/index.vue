@@ -27,7 +27,7 @@ const breadcrumbItems = computed(() => {
     >
       <template #default>
         <span class="flex items-center gap-1">
-          <SvgIcon v-if="item.icon" :name="item.icon" />
+          <SvgIcon v-if="item.icon" :iconName="item.icon" :iconSize="20" />
           <span>{{ item.title }}</span>
         </span>
       </template>
