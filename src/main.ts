@@ -3,11 +3,11 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import router from './router'
 
-import GlobalComponents from '@/components/index'
-import pinia from '@/stores'
 import 'element-plus/dist/index.css'
+import GlobalComponents from '@/components/index'
+import { setupRouter } from '@/router'
+import pinia from '@/stores'
 
 import 'nprogress/nprogress.css'
 
@@ -20,12 +20,20 @@ import 'virtual:svg-icons-register'
 // 引入 iconfont 图标
 import '@/assets/iconfont/iconfont.js'
 
-// 引入 NProgress 样式
+// 创建 Vue 应用
 const app = createApp(App)
 
 app.use(pinia)
-app.use(router)
 app.use(ElementPlus, { locale: zhCn })
 app.use(GlobalComponents)
 
-app.mount('#app')
+async function startApp() {
+  // 挂载路由
+  await setupRouter(app)
+  app.mount('#app')
+}
+
+// 启动应用
+startApp().catch((error) => {
+  console.error('启动应用时发生错误:', error)
+})

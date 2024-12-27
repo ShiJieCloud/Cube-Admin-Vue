@@ -1,6 +1,7 @@
-import { MenuItemResponse } from '@/types/models/menu'
+import { IMenuTree } from '@/types/models/menu'
 import { http } from '@/utils/http'
 
-export const getMenuList = (): Promise<MenuItemResponse> => {
-  return http.get('/menu')
+// 获取用户菜单权限
+export const getUserMenusApi = (): Promise<IMenuTree[]> => {
+  return http.get('/user/menus')
 }

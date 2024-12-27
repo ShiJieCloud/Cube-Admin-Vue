@@ -2,7 +2,7 @@
 import { ElMessage, ElNotification, FormInstance, FormRules } from 'element-plus'
 import { onMounted, reactive, ref } from 'vue'
 
-import { getCaptchaApi, getUserInfoApi, postUsernameLogin } from '@/api/user'
+import { getCaptchaApi, postUsernameLogin } from '@/api/user'
 import { LoginFormMode } from '@/constants/loginFormMode'
 import router from '@/router'
 import { useUserStore } from '@/stores/user'
@@ -11,7 +11,7 @@ import { getGreeting } from '@/utils/getGreeting'
 import { handleError } from '@/utils/handleError'
 import { closeLoading, startLoading } from '@/utils/loading'
 
-const { setUserToken, setLoginFormMode, userInfo, setUserInfo } = useUserStore()
+const { setToken, setLoginFormMode, userInfo, loadUserData } = useUserStore()
 
 const usernameLoginRequestRef = ref<FormInstance>()
 
@@ -42,51 +42,40 @@ const usernameLoginRequestRules = reactive<FormRules<UsernameLoginRequest>>({
 const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
-  // 执行表单验证，验证失败时直接返回
+  // 表单验证
   const isValid = await formEl.validate()
   if (!isValid) return
 
+  const { username, password, captcha } = usernameLoginRequest.value
+
+  // 基本的用户名、密码、验证码验证
+  if (username !== 'admin123' || password !== 'admin123' || captcha !== '111111') {
+    ElMessage.error('用户名、密码或验证码错误')
+    return
+  }
+
   try {
-    // 解构出表单数据
-    const { username, password, captcha } = usernameLoginRequest.value
-
-    // 进行基本的用户名、密码、验证码验证
-    if (username !== 'admin123' || password !== 'admin123' || captcha !== '111111') {
-      ElMessage.error('用户名、密码或验证码错误')
-      return
-    }
-
-    // 显示加载状态
     startLoading()
 
     // 调用登录 API
-    const usernameLoginResponse = await postUsernameLogin(usernameLoginRequest.value)
-
-    // 设置用户 Token
-    setUserToken(usernameLoginResponse.token)
+    const response = await postUsernameLogin(usernameLoginRequest.value)
+    setToken(response.token)
 
     ElMessage.success('登录成功')
+    await loadUserData()
 
-    // 获取用户信息并设置
-    const userData = await getUserInfoApi()
-    if (userData) setUserInfo(userData)
-
-    // 跳转到首页
     await router.push({ name: 'Home' })
 
-    // 显示欢迎通知
     ElNotification({
       title: getGreeting(),
       message: `欢迎回来，${userInfo?.nickname}`,
       type: 'success',
       duration: 2000,
     })
-
-    // 关闭加载状态
-    closeLoading()
   } catch (error) {
-    // 错误处理
     handleError(error)
+  } finally {
+    await closeLoading()
   }
 }
 
