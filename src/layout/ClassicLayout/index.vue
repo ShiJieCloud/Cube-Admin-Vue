@@ -5,7 +5,7 @@ import Logo from '@/layout/components/Logo/index.vue'
 import Menu from '@/layout/components/Menu/index.vue'
 import { useUserStore } from '@/stores/user'
 
-const { userInfo } = useUserStore()
+const { userInfo, userLogout } = useUserStore()
 </script>
 
 <template>
@@ -71,7 +71,7 @@ const { userInfo } = useUserStore()
                   </el-dropdown-item>
                   <el-dropdown-item command="logout">
                     <template #default>
-                      <div class="flex items-center gap-1">
+                      <div class="flex items-center gap-1" @click="userLogout">
                         <SvgIcon iconName="logout" :iconSize="20" />
                         <span>退出登录</span>
                       </div>
