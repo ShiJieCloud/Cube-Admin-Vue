@@ -1,4 +1,3 @@
-import NProgress from 'nprogress'
 import { App } from 'vue'
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
@@ -13,8 +12,6 @@ const routerMode = {
   history: () => createWebHistory(AppConfig.getBaseUrl()),
   hash: () => createWebHashHistory(AppConfig.getBaseUrl()),
 }
-
-const whiteNameList = ['Login', 'icons', 'error', 'error-404']
 
 // 创建路由实例
 const router = createRouter({
