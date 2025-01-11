@@ -1,4 +1,8 @@
-# Cube-Admin-Vue
+# Cube-Admin-Vue![star](https://gitcode.com/GitCode-official-team/EssayCompetition/star/badge.svg)
+
+加跳转链接
+[![star](https://gitcode.com/GitCode-official-team/EssayCompetition/star/badge.svg)](https://gitcode.com/qq_20185737/Cube-Admin-Vue)
+Cube-Admin-Vue 是一个基于 Vue.js 的后台管理系统前端模板，使用 TailwindCSS 和 Sass 进行样式定制，支持响应式布局，适合构建现代化的后台管理界面。
 
 Cube-Admin-Vue 是一个基于 Vue.js 的后台管理系统前端模板，使用 TailwindCSS 和 Sass 进行样式定制，支持响应式布局，适合构建现代化的后台管理界面。
 
